@@ -1,0 +1,16 @@
+{
+  // 统一格式化
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "none", // 去除最后一个 “,”
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+}
