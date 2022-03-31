@@ -1,5 +1,7 @@
 /**
  * 插入排序
+ *
+ * 分为已排序区间和未排序区间，未排序区间的跟排序区间的进行比较然后插入
  */
 export default class InsertionSort {
   sort(originalArray: number[]) {
