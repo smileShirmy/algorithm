@@ -1,4 +1,21 @@
-function fibonacci(n: number, ac1 = 1, ac2 = 1): number {
-  if (n <= 1) return ac2;
-  return fibonacci(n - 1, ac2, ac1 + ac2);
+function sort(originalArray: number[]): number[] {
+  const array = [...originalArray];
+
+  for (let i = 1; i < array.length; i += 1) {
+    let currentIndex = i;
+
+    while (
+      array[currentIndex - 1] !== undefined &&
+      array[currentIndex] < array[currentIndex - 1]
+    ) {
+      [array[currentIndex - 1], array[currentIndex]] = [
+        array[currentIndex],
+        array[currentIndex - 1]
+      ];
+
+      currentIndex -= i;
+    }
+  }
+
+  return array;
 }
