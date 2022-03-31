@@ -1,19 +1,17 @@
 function sort(originalArray: number[]): number[] {
   const array = [...originalArray];
 
-  for (let i = 1; i < array.length; i += 1) {
-    let currentIndex = i;
+  for (let i = 0; i < array.length - 1; i += 1) {
+    let minIndex = i;
 
-    while (
-      array[currentIndex - 1] !== undefined &&
-      array[currentIndex] < array[currentIndex - 1]
-    ) {
-      [array[currentIndex - 1], array[currentIndex]] = [
-        array[currentIndex],
-        array[currentIndex - 1]
-      ];
+    for (let j = i + 1; j < array.length; j += 1) {
+      if (array[j] < array[minIndex]) {
+        minIndex = j;
+      }
+    }
 
-      currentIndex -= i;
+    if (i !== minIndex) {
+      [array[minIndex], array[i]] = [array[i], array[minIndex]];
     }
   }
 
