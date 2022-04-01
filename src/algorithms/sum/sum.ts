@@ -1,42 +1,30 @@
 function sort(originalArray: number[]): number[] {
-  if (originalArray.length <= 1) {
-    return originalArray;
+  const array: number[] = [...originalArray];
+
+  if (array.length <= 1) {
+    return array;
   }
 
-  const middleIndex = Math.floor(originalArray.length / 2);
-  const leftArray = originalArray.slice(0, middleIndex);
-  const rightArray = originalArray.slice(middleIndex, originalArray.length);
+  const leftArray: number[] = [];
+  const rightArray: number[] = [];
 
-  const leftSortedArray = sort(leftArray);
-  const rightSortedArray = sort(rightArray);
+  const pivotElement = array.shift()!;
+  const centerArray: number[] = [pivotElement];
 
-  return mergeSortedArrays(leftSortedArray, rightSortedArray);
-}
+  while (array.length) {
+    const currentElement = array.shift()!;
 
-function mergeSortedArrays(
-  leftArray: number[],
-  rightArray: number[]
-): number[] {
-  const sortedArray: number[] = [];
-
-  let leftIndex = 0;
-  let rightIndex = 0;
-
-  while (leftIndex < leftArray.length && rightIndex < rightArray.length) {
-    let minElement = null;
-
-    if (leftArray[leftIndex] < rightArray[rightIndex]) {
-      minElement = leftArray[leftIndex];
-      leftIndex += 1;
+    if (currentElement === pivotElement) {
+      centerArray.push(currentElement);
+    } else if (currentElement < pivotElement) {
+      leftArray.push(currentElement);
     } else {
-      minElement = rightArray[rightIndex];
-      rightIndex += 1;
+      rightArray.push(currentElement);
     }
-
-    sortedArray.push(minElement);
   }
 
-  return sortedArray
-    .concat(leftArray.slice(leftIndex))
-    .concat(rightArray.slice(rightIndex));
+  const leftArraySorted = sort(leftArray);
+  const rightArraySorted = sort(rightArray);
+
+  return leftArraySorted.concat(centerArray, rightArraySorted);
 }
