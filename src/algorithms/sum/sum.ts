@@ -1,30 +1,51 @@
-function sort(originalArray: number[]): number[] {
-  const array: number[] = [...originalArray];
+function sort(
+  originalArray: number[],
+  smallestElement = undefined,
+  biggestElement = undefined
+): number[] {
+  let detectedBiggestElement = biggestElement || 0;
+  let detectedSmallestElement = smallestElement || 0;
 
-  if (array.length <= 1) {
-    return array;
+  if (smallestElement === undefined || biggestElement === undefined) {
+    originalArray.forEach((element) => {
+      if (element > detectedBiggestElement) {
+        detectedBiggestElement = element;
+      }
+      if (element < detectedSmallestElement) {
+        detectedSmallestElement = element;
+      }
+    });
   }
 
-  const leftArray: number[] = [];
-  const rightArray: number[] = [];
+  const buckets = Array(
+    detectedBiggestElement - detectedSmallestElement + 1
+  ).fill(0);
 
-  const pivotElement = array.shift()!;
-  const centerArray: number[] = [pivotElement];
+  originalArray.forEach((element) => {
+    buckets[element - detectedSmallestElement] += 1;
+  });
 
-  while (array.length) {
-    const currentElement = array.shift()!;
-
-    if (currentElement === pivotElement) {
-      centerArray.push(currentElement);
-    } else if (currentElement < pivotElement) {
-      leftArray.push(currentElement);
-    } else {
-      rightArray.push(currentElement);
-    }
+  for (let bucketIndex = 1; bucketIndex < buckets.length; bucketIndex += 1) {
+    buckets[bucketIndex] += buckets[bucketIndex - 1];
   }
 
-  const leftArraySorted = sort(leftArray);
-  const rightArraySorted = sort(rightArray);
+  buckets.pop();
+  buckets.unshift(0);
 
-  return leftArraySorted.concat(centerArray, rightArraySorted);
+  const sortedArray = Array(originalArray.length).fill(null);
+  for (
+    let elementIndex = 0;
+    elementIndex < originalArray.length;
+    elementIndex += 1
+  ) {
+    const element = originalArray[elementIndex];
+
+    const elementSortedPosition = buckets[element - detectedSmallestElement];
+
+    sortedArray[elementSortedPosition] = element;
+
+    buckets[element - detectedSmallestElement] += 1;
+  }
+
+  return sortedArray;
 }
