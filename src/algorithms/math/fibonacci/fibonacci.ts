@@ -8,6 +8,9 @@ function fibonacci1(n: number): number {
 
 /**
  * 递归
+ *
+ * 经测试，chrome 并不支持尾调用优化
+ *
  * 尾调用优化，某个函数的最后一步是调用另一个函数
  */
 function fibonacci2(n: number, ac1 = 1, ac2 = 1): number {
