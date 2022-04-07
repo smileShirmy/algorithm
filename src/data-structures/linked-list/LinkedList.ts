@@ -13,18 +13,18 @@ import LinkedListNode from './LinkedListNode';
  * toString()
  * reverse()
  */
-export default class LinkedList {
-  head: LinkedListNode | null = null;
+export default class LinkedList<T> {
+  head: LinkedListNode<T> | null = null;
 
-  tail: LinkedListNode | null = null;
+  tail: LinkedListNode<T> | null = null;
 
   constructor() {
     this.head = null;
     this.tail = null;
   }
 
-  prepend(value: any) {
-    const newNode = new LinkedListNode(value, this.head);
+  prepend(value: T) {
+    const newNode = new LinkedListNode<T>(value, this.head);
     this.head = newNode;
 
     if (!this.tail) {
@@ -34,8 +34,8 @@ export default class LinkedList {
     return this;
   }
 
-  append(value: any) {
-    const newNode = new LinkedListNode(value);
+  append(value: T) {
+    const newNode = new LinkedListNode<T>(value);
 
     if (!this.head) {
       this.head = newNode;
@@ -50,13 +50,13 @@ export default class LinkedList {
     return this;
   }
 
-  insert(value: any, rawIndex: number) {
+  insert(value: T, rawIndex: number) {
     const index = rawIndex < 0 ? 0 : rawIndex;
     if (index === 0) {
       this.prepend(value);
     } else {
       let currentNode = this.head;
-      let newNode = new LinkedListNode(value);
+      let newNode = new LinkedListNode<T>(value);
       let count = 1;
 
       while (currentNode) {
@@ -82,7 +82,7 @@ export default class LinkedList {
     return this;
   }
 
-  delete(value: any) {
+  delete(value: T) {
     if (!this.head) return null;
 
     let deletedNode = null;
@@ -112,10 +112,16 @@ export default class LinkedList {
     return deletedNode;
   }
 
-  find({ value, callback }: { value: any; callback: Function }) {
+  find({
+    value,
+    callback
+  }: {
+    value?: T;
+    callback?: (nodeValue: T) => boolean;
+  }) {
     if (!this.head) return null;
 
-    let currentNode: LinkedListNode | null = this.head;
+    let currentNode: LinkedListNode<T> | null = this.head;
 
     while (currentNode) {
       if (callback && callback(currentNode.value)) {
@@ -172,7 +178,7 @@ export default class LinkedList {
     return deletedHead;
   }
 
-  fromArray(values: any[]) {
+  fromArray(values: T[]) {
     values.forEach((value) => this.append(value));
 
     return this;
@@ -191,7 +197,7 @@ export default class LinkedList {
     return nodes;
   }
 
-  toString(callback: Function) {
+  toString(callback: (nodeValue: T) => string) {
     return this.toArray()
       .map((node) => node.toString(callback))
       .toString();
