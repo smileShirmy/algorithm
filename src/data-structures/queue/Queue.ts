@@ -7,8 +7,8 @@ import LinkedList from '../linked-list/LinkedList';
  *
  * 阻塞队列/并发队列
  */
-export default class Queue {
-  linkedList: LinkedList;
+export default class Queue<T> {
+  linkedList: LinkedList<T>;
 
   constructor() {
     this.linkedList = new LinkedList();
@@ -26,7 +26,7 @@ export default class Queue {
     return this.linkedList.head!.value;
   }
 
-  enqueue(value: any) {
+  enqueue(value: T) {
     this.linkedList.append(value);
   }
 
@@ -35,7 +35,7 @@ export default class Queue {
     return removeHead ? removeHead.value : null;
   }
 
-  toString(callback: Function) {
+  toString(callback: (nodeValue: T) => string) {
     return this.linkedList.toString(callback);
   }
 }
