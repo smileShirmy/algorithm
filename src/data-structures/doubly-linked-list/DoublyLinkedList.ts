@@ -12,18 +12,18 @@ import DoublyLinkedListNode from './DoublyLinkedListNode';
  * toString()
  * reverse()
  */
-export default class DoublyLinkedList {
-  head: DoublyLinkedListNode | null = null;
+export default class DoublyLinkedList<T> {
+  head: DoublyLinkedListNode<T> | null = null;
 
-  tail: DoublyLinkedListNode | null = null;
+  tail: DoublyLinkedListNode<T> | null = null;
 
   constructor() {
     this.head = null;
     this.tail = null;
   }
 
-  prepend(value: any) {
-    const newNode = new DoublyLinkedListNode(value, this.head);
+  prepend(value: T) {
+    const newNode = new DoublyLinkedListNode<T>(value, this.head);
 
     if (this.head) {
       this.head.previous = newNode;
@@ -37,8 +37,8 @@ export default class DoublyLinkedList {
     return this;
   }
 
-  append(value: any) {
-    const newNode = new DoublyLinkedListNode(value);
+  append(value: T) {
+    const newNode = new DoublyLinkedListNode<T>(value);
 
     if (!this.head) {
       this.head = newNode;
@@ -56,13 +56,13 @@ export default class DoublyLinkedList {
     return this;
   }
 
-  delete(value: any) {
+  delete(value: T) {
     if (!this.head) {
       return null;
     }
 
     let deletedNode = null;
-    let currentNode: DoublyLinkedListNode | null = this.head;
+    let currentNode: DoublyLinkedListNode<T> | null = this.head;
 
     while (currentNode) {
       if (currentNode.value === value) {
@@ -100,14 +100,14 @@ export default class DoublyLinkedList {
     value = undefined,
     callback = undefined
   }: {
-    value?: any;
-    callback?: Function;
+    value?: T;
+    callback?: (nodeValue: T) => boolean;
   }) {
     if (!this.head) {
       return null;
     }
 
-    let currentNode: DoublyLinkedListNode | null = this.head;
+    let currentNode: DoublyLinkedListNode<T> | null = this.head;
 
     while (currentNode) {
       if (typeof callback === 'function' && callback(currentNode.value)) {
@@ -171,13 +171,13 @@ export default class DoublyLinkedList {
     return nodes;
   }
 
-  fromArray(values: any[]) {
+  fromArray(values: T[]) {
     values.forEach((value) => this.append(value));
 
     return this;
   }
 
-  toString(callback: Function) {
+  toString(callback: (nodeValue: T) => string) {
     return this.toArray()
       .map((node) => node.toString(callback))
       .toString();

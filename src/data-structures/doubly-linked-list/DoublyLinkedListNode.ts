@@ -1,21 +1,21 @@
-export default class DoublyLinkedListNode {
-  next: DoublyLinkedListNode | null = null;
+export default class DoublyLinkedListNode<T> {
+  next: DoublyLinkedListNode<T> | null = null;
 
-  previous: DoublyLinkedListNode | null = null;
+  previous: DoublyLinkedListNode<T> | null = null;
 
-  value = undefined;
+  value: T;
 
   constructor(
-    value: any,
-    next: DoublyLinkedListNode | null = null,
-    previous: DoublyLinkedListNode | null = null
+    value: T,
+    next: DoublyLinkedListNode<T> | null = null,
+    previous: DoublyLinkedListNode<T> | null = null
   ) {
     this.value = value;
     this.next = next;
     this.previous = previous;
   }
 
-  toString(callback: Function) {
+  toString(callback?: (nodeValue: T) => string) {
     return callback ? callback(this.value) : `${this.value}`;
   }
 }
