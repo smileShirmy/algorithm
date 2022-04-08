@@ -1,10 +1,10 @@
 import LinkedList from '../linked-list/LinkedList';
 
-export default class Stack {
-  linkedList: LinkedList;
+export default class Stack<T> {
+  linkedList: LinkedList<T>;
 
   constructor() {
-    this.linkedList = new LinkedList();
+    this.linkedList = new LinkedList<T>();
   }
 
   isEmpty() {
@@ -19,7 +19,7 @@ export default class Stack {
     return this.linkedList.head!.value;
   }
 
-  push(value: any) {
+  push(value: T) {
     this.linkedList.prepend(value);
   }
 
@@ -34,7 +34,7 @@ export default class Stack {
       .map((linkedListNode) => linkedListNode.value);
   }
 
-  toString(callback: Function) {
+  toString(callback: (nodeValue: T) => string) {
     return this.linkedList.toString(callback);
   }
 }
