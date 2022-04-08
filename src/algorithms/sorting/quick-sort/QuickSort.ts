@@ -17,18 +17,18 @@ export default class QuickSort {
     const leftArray: number[] = [];
     const rightArray: number[] = [];
 
-    const pivotElement = array.shift();
-    const centerArray: number[] = [pivotElement!];
+    const pivotElement = array.shift()!;
+    const centerArray: number[] = [pivotElement];
 
     while (array.length) {
-      const currentElement = array.shift();
+      const currentElement = array.shift()!;
 
       if (currentElement === pivotElement) {
-        centerArray.push(currentElement!);
-      } else if (currentElement! < pivotElement!) {
-        leftArray.push(currentElement!);
+        centerArray.push(currentElement);
+      } else if (currentElement < pivotElement) {
+        leftArray.push(currentElement);
       } else {
-        rightArray.push(currentElement!);
+        rightArray.push(currentElement);
       }
     }
 
