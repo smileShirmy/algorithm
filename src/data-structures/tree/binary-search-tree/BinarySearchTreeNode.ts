@@ -11,7 +11,7 @@ export default class BinarySearchTreeNode<T> extends BinaryTreeNode<T> {
 
   insert(value: T): BinarySearchTreeNode<T> {
     if (this.value === null) {
-      this.value = null;
+      this.value = value;
 
       return this;
     }
