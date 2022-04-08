@@ -75,6 +75,7 @@ export default class BinarySearchTreeNode<T> extends BinaryTreeNode<T> {
       if (parent) {
         parent.removeChild(nodeToRemove);
       } else {
+        // 没有父节点，直接把值置为 null
         nodeToRemove.setValue(null);
       }
     }
