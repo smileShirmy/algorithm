@@ -78,9 +78,12 @@ export default class BinarySearchTreeNode<T> extends BinaryTreeNode<T> {
         // 没有父节点，直接把值置为 null
         nodeToRemove.setValue(null);
       }
-    }
-    // 有两个子节点
-    else if (nodeToRemove.left && nodeToRemove.right) {
+    } else if (nodeToRemove.left && nodeToRemove.right) {
+      /**
+       * 有两个子节点
+       * 找到这个节点的右子树中的最小节点，把它替换到要删除的节点上
+       * 然后再删除掉这个最小节点，因为最小节点肯定没有左子节点（如果有左子结点，那就不是最小节点了）
+       */
       const nextBiggerNode = nodeToRemove.right.findMin();
       if (nextBiggerNode === nodeToRemove.right) {
         this.remove(nextBiggerNode.value!);
