@@ -100,13 +100,17 @@ export default abstract class Heap<T> {
     for (let i = 0; i < numberOfItemsToRemove; i += 1) {
       const indexToRemove = this.find(item).pop()!;
 
+      // 如果要移除的是最后一个子节点，直接 pop()
       if (indexToRemove === this.heapContainer.length - 1) {
         this.heapContainer.pop();
       } else {
+        // 转变一下思路，为了避免数组空洞，把要移除的 item 和 最后一个 item 交换位置
+        // 即是先保证完整性，再保证有序性
         this.heapContainer[indexToRemove] = this.heapContainer.pop()!;
 
         const parentItem = this.parent(indexToRemove);
 
+        // 如果没有父节点或者顺序是正确的则向下堆化，否则向上堆化
         if (
           this.hasLeftChild(indexToRemove) &&
           (!parentItem ||
@@ -145,7 +149,60 @@ export default abstract class Heap<T> {
     return this.heapContainer.toString();
   }
 
-  heapifyUp(customStartIndex: number) {
+  // 从下往上堆化
+  heapifyUp(customStartIndex?: number) {
+    // 如果没有指定取最后一个元素（数组中的最后一个或树的右下角）
     let currentIndex = customStartIndex || this.heapContainer.length - 1;
+
+    while (
+      this.hasParent(currentIndex) &&
+      !this.pairIsInCorrectOrder(
+        this.parent(currentIndex),
+        this.heapContainer[currentIndex]
+      )
+    ) {
+      // 和父节点反复比对，并且让索引往上移
+      this.swap(currentIndex, this.getParentIndex(currentIndex));
+      currentIndex = this.getParentIndex(currentIndex);
+    }
   }
+
+  // 从上往下堆化
+  heapifyDown(customStartIndex = 0) {
+    let currentIndx = customStartIndex;
+    let nextIndex = null;
+
+    while (this.hasLeftChild(currentIndx)) {
+      if (
+        this.hasRightChild(currentIndx) &&
+        this.pairIsInCorrectOrder(
+          this.rightChild(currentIndx),
+          this.leftChild(currentIndx)
+        )
+      ) {
+        nextIndex = this.getRightChildIndex(currentIndx);
+      } else {
+        nextIndex = this.getLeftChildIndex(currentIndx);
+      }
+
+      if (
+        this.pairIsInCorrectOrder(
+          this.heapContainer[currentIndx],
+          this.heapContainer[nextIndex]
+        )
+      ) {
+        break;
+      }
+
+      this.swap(currentIndx, nextIndex);
+      currentIndx = nextIndex;
+    }
+  }
+
+  /**
+   * throw new Error(
+   *  `You have to implement heap pair comparison method for ${firstElement} and ${secondElement} values.`
+   * );
+   */
+  abstract pairIsInCorrectOrder(firstElement: T, secondElement: T): boolean;
 }
