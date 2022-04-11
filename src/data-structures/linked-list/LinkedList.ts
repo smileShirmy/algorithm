@@ -1,3 +1,4 @@
+import Comparator, { CompareFunction } from 'src/utils/comparator/Comparator';
 import LinkedListNode from './LinkedListNode';
 
 /**
@@ -18,9 +19,13 @@ export default class LinkedList<T> {
 
   tail: LinkedListNode<T> | null = null;
 
-  constructor() {
+  compare: Comparator<T>;
+
+  constructor(comparatorFunction?: CompareFunction<T>) {
     this.head = null;
     this.tail = null;
+
+    this.compare = new Comparator(comparatorFunction);
   }
 
   prepend(value: T) {
@@ -87,7 +92,7 @@ export default class LinkedList<T> {
 
     let deletedNode = null;
 
-    if (this.head && this.head.value === value) {
+    if (this.head && this.compare.equal(this.head.value, value)) {
       deletedNode = this.head;
       this.head = this.head.next;
     }
@@ -96,7 +101,7 @@ export default class LinkedList<T> {
 
     if (currentNode !== null) {
       while (currentNode.next) {
-        if (currentNode.next.value === value) {
+        if (this.compare.equal(currentNode.next.value, value)) {
           deletedNode = currentNode.next;
           currentNode.next = currentNode.next.next;
         } else {
@@ -105,7 +110,7 @@ export default class LinkedList<T> {
       }
     }
 
-    if (this.tail!.value === value) {
+    if (this.compare.equal(this.tail!.value, value)) {
       this.tail = currentNode;
     }
 
@@ -128,7 +133,7 @@ export default class LinkedList<T> {
         return currentNode;
       }
 
-      if (value !== undefined && currentNode.value === value) {
+      if (value !== undefined && this.compare.equal(currentNode.value, value)) {
         return currentNode;
       }
 
