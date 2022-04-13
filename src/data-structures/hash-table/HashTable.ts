@@ -21,13 +21,13 @@ import LinkedList from '../linked-list/LinkedList';
  */
 const DEFAULT_HASH_TABLE_SIZE = 32;
 
-interface NodeValue {
+interface NodeValue<T> {
   key: string;
-  value: string;
+  value: T;
 }
 
-export default class HashTable {
-  buckets: LinkedList<NodeValue>[] = [];
+export default class HashTable<T> {
+  buckets: LinkedList<NodeValue<T>>[] = [];
 
   keys: Record<string, number>;
 
@@ -53,7 +53,7 @@ export default class HashTable {
     return hash % this.buckets.length;
   }
 
-  set(key: string, value: string) {
+  set(key: string, value: T) {
     const keyHash = this.hash(key);
     this.keys[key] = keyHash;
     const bucketLinkedList = this.buckets[keyHash];
@@ -101,7 +101,7 @@ export default class HashTable {
   }
 
   getValues() {
-    return this.buckets.reduce<string[]>((values, bucket) => {
+    return this.buckets.reduce<T[]>((values, bucket) => {
       const bucketValues = bucket
         .toArray()
         .map((linkedListNode) => linkedListNode.value.value);
