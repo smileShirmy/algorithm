@@ -1,6 +1,5 @@
 import Graph from 'src/data-structures/graph/Graph';
 import GraphVertex from 'src/data-structures/graph/GraphVertex';
-import Queue from '../../../data-structures/queue/Queue';
 
 interface Callbacks {
   allowTraversal: (obj: {
@@ -18,8 +17,8 @@ interface Callbacks {
   }) => void;
 }
 
-function initCallbacks(callbacks: Callbacks | Record<string, never> = {}) {
-  const initiatedCallback = callbacks;
+function initCallbacks(callbacks: Callbacks) {
+  const initiatedCallback = callbacks || {};
 
   const stubCallback = () => {};
 
@@ -45,7 +44,7 @@ function initCallbacks(callbacks: Callbacks | Record<string, never> = {}) {
 function depthFirstSearchRecursive(
   graph: Graph<string>,
   currentVertex: GraphVertex<string>,
-  previousVertex: GraphVertex<string>,
+  previousVertex: GraphVertex<string> | null,
   callbacks: Callbacks
 ) {
   callbacks.enterVertex({ currentVertex, previousVertex });
@@ -59,4 +58,18 @@ function depthFirstSearchRecursive(
   });
 
   callbacks.leaveVertex({ currentVertex, previousVertex });
+}
+
+export default function depthFirstSearch(
+  graph: Graph<string>,
+  startVertex: GraphVertex<string>,
+  callbacks: Callbacks
+) {
+  const previousVertex: GraphVertex<string> | null = null;
+  depthFirstSearchRecursive(
+    graph,
+    startVertex,
+    previousVertex,
+    initCallbacks(callbacks)
+  );
 }
